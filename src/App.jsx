@@ -8,7 +8,6 @@ function App() {
   const [product, setProduct] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
@@ -20,10 +19,13 @@ function App() {
 
   const loadMoreProducts = () => {
     const nextIndex = currentIndex + 3;
+
     const nextProducts = product.slice(nextIndex, nextIndex + 3);
+
     setVisibleProducts([...visibleProducts, ...nextProducts]);
     setCurrentIndex(nextIndex);
   };
+  console.log(visibleProducts);
 
   return (
     <>
@@ -31,7 +33,11 @@ function App() {
         <div className="row mt-4">
           {product.length > 0 && <Products items={visibleProducts} />}
         </div>
-        <Controls handleLoad={loadMoreProducts} />
+        {visibleProducts.length >= product.length ? (
+          "No More Products to show"
+        ) : (
+          <Controls handleLoad={loadMoreProducts} />
+        )}
       </div>
     </>
   );
